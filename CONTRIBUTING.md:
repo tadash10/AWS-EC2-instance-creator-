@@ -1,0 +1,40 @@
+# Contributing to EC2 Setup Script
+
+Contributions to the EC2 Setup Script project are welcome! Please follow the guidelines below to contribute effectively.
+
+## How to Contribute
+
+1. Fork the repository to your GitHub account.
+
+2. Clone the forked repository to your local machine:
+
+    ```bash
+    git clone https://github.com/your-username/ec2_setup.git
+    ```
+
+3. Create a new branch for your feature or bug fix:
+
+    ```bash
+    git checkout -b feature/your-feature-name
+    ```
+
+4. Make your changes and commit them with a descriptive commit message:
+
+    ```bash
+    git add .
+    git commit -m "Add your commit message here"
+    ```
+
+5. Push your changes to your fork:
+
+    ```bash
+    git push origin feature/your-feature-name
+    ```
+
+6. Open a pull request on the original repository's `main` branch.
+
+7. Wait for your pull request to be reviewed and merged.
+
+## Code of Conduct
+
+Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project, you agree to abide by its terms.
