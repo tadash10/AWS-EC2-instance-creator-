@@ -1,8 +1,6 @@
-
 import boto3
-from botocore.exceptions import NoCredentialsError, PartialCredentialsError, ClientError
+from botocore.exceptions import ClientError
 import logging
-import time
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -11,25 +9,15 @@ logger = logging.getLogger(__name__)
 def create_security_group(client):
     try:
         response = client.create_security_group(
-            Description='allow SSH and HTTP',
+            Description='Allow SSH and HTTP',
             GroupName='SecGroup'
         )
         security_group_id = response['GroupId']
         client.authorize_security_group_ingress(
             GroupId=security_group_id,
             IpPermissions=[
-                {
-                    'IpProtocol': 'tcp',
-                    'FromPort': 22,
-                    'ToPort': 22,
-                    'IpRanges': [{'CidrIp': '0.0.0.0/0'}]
-                },
-                {
-                    'IpProtocol': 'tcp',
-                    'FromPort': 80,
-                    'ToPort': 80,
-                    'IpRanges': [{'CidrIp': '0.0.0.0/0'}]
-                },
+                {'IpProtocol': 'tcp', 'FromPort': 22, 'ToPort': 22, 'IpRanges': [{'CidrIp': '0.0.0.0/0'}]},
+                {'IpProtocol': 'tcp', 'FromPort': 80, 'ToPort': 80, 'IpRanges': [{'CidrIp': '0.0.0.0/0'}]}
             ]
         )
         return security_group_id
@@ -66,7 +54,7 @@ def create_ec2_instance(ami_choice, user_data_script):
             MinCount=1,
             MaxCount=1,
             InstanceType='t2.micro',
-            KeyName='your-key-pair-name',
+            KeyName='your-key-pair-name',  # Ensure to replace with actual key pair name
             SecurityGroupIds=[security_group_id],
             UserData=user_data_script
         )
@@ -120,10 +108,10 @@ def main():
     try:
         user_data_script = get_user_data_script(ami_choice)
         create_ec2_instance(ami_choice, user_data_script)
-    except (NoCredentialsError, PartialCredentialsError):
-        logger.error("AWS credentials not found. Please configure your AWS credentials.")
+    except ClientError as e:
+        logger.error(f"AWS error occurred: {e}")
     except ValueError as e:
-        logger.error(e)
+        logger.error(f"Value error occurred: {e}")
     except Exception as e:
         logger.error(f"An error occurred: {e}")
 
